@@ -11,6 +11,11 @@ use Acme\DemoBundle\Form\ContactType;
 // these import the "@Route" and "@Template" annotations
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
+use Google\Spreadsheet\DefaultServiceRequest;
+use Google\Spreadsheet\ServiceRequestFactory;
+use Google\Spreadsheet\SpreadsheetService;
+
 
 use Acme\DemoBundle\Entity\Product;
 
@@ -34,6 +39,30 @@ class DemoController extends Controller
     {
         return array('name' => $name);
     }
+
+    /**
+     * @Route("/google/spreadsheet", name="json_response")
+     * @Template
+     */
+    public function googleSpreadSheetAction()
+    {
+
+        //$accessToken = "1TzbsF_GCpzLycDqD-RC2xaKKJOjOP1evNNzwc0ci7FI";
+        //$serviceRequest = new DefaultServiceRequest($accessToken);
+        //ServiceRequestFactory::setInstance($serviceRequest);
+
+        //$instance = ServiceRequestFactory::getInstance();
+
+        //$spreadsheetService = new Google\Spreadsheet\SpreadsheetService();
+        //var_dump($instance);
+        //die('stop');
+
+
+
+        return array('name'=>'piotr');
+    }
+
+
 
     /**
      * @Route("/category/add", name="add_category")
@@ -95,10 +124,10 @@ class DemoController extends Controller
 
 
     /**
-     * @Route("/product/showAll", name="show_product")
+     * @Route("/product/showAll", name="show_all_product")
      * @Template()
      */
-    public function prodcutShowAction()
+    public function prodcutShowAllAction()
     {
         $products = $this->getDoctrine()
             ->getRepository('AcmeDemoBundle:Product')
@@ -127,6 +156,17 @@ class DemoController extends Controller
     }
 
     /**
+     * @Route("/product/showByCat/{id}", name="product_show_by_category")
+     * @Template()
+     */
+    public function productShowByCatAction($id)
+    {
+        $products = $this->getDoctrine()->getRepository('AcmeDemoBundle:Product')->findOneByIdJoinedToCategory($id);
+        var_dump($products); die;
+
+    }
+
+    /**
      * @Route("/product/update/{id}", name="update_product")
      * @Template()
      */
@@ -147,6 +187,55 @@ class DemoController extends Controller
         die('product updated id: ' . $id);
         return array();
     }
+
+    /**
+     * @Route("/product/delete/{id}", name="delete_product")
+     * @Template()
+     */
+    public function productDelete($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('AcmeDemoBundle:Product')->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+
+        $em->remove($product);
+        $em->flush();
+    }
+
+    /**
+     * @Route("/product/category/{id}", name="category_product")
+     * @Template()
+     */
+    public function productCategoryAction($id)
+    {
+        $category = $this->getDoctrine()->getManager()->getRepository('AcmeDemoBundle:Category')->find($id);
+
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'No category found for id '.$id
+            );
+        }
+
+        $products = $category->getProducts();
+
+
+        foreach($products as $product) {
+            echo 'name: ' . $product->getName() . '<br/>';
+            echo 'price: ' . $product->getPrice() . '<br/>';
+            echo 'description: ' . $product->getDescription() . '<br/>';
+            echo 'category: ' . $product->getCategory()->getName() . '<br/>';
+            echo '-----------------------------------------------------<br/>';
+        }
+        die('products in category');
+    }
+
+
+
 
     /**
      * @Route("/contact", name="_demo_contact")

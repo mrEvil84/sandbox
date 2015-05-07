@@ -1,0 +1,62 @@
+{% extends "AcmeDemoBundle::layout.html.twig" %}
+
+{% block title "Hello " ~ name %}
+
+{% block content %}
+    <h1>Hello {{ name }}!</h1>
+
+    <table>
+        <tr>
+            <td> Costs </td>
+        </tr>
+        <tr>
+            <td> Costs </td>
+        </tr>
+        <tr>
+            <td> {#https://drive.google.com/open?id=1d2SGaWyN4jiBryYeo7SK99nIPgg8GdTgWJJtcrjbJbM&authuser=1#} </td>
+        </tr>
+    </table>
+
+    <iframe src="https://drive.google.com/open?id=1eO7eVJp9DY6icjd-uXbYRX3vVxFsGtXvh5JzQSsOYeU&authuser=1"
+            name="google_spreadsheet"
+            scrolling="yes"
+            width="750"
+            height="600">
+    </iframe>
+
+{% endblock %}
+
+{% set code = code(_self) %}
+
+{#
+Investigate : Integrate Google Spreadsheets data with PHP
+
+IBM:
+- http://www.ibm.com/developerworks/library/x-googledata1/
+- http://www.ibm.com/developerworks/library/x-googledata2/
+
+Others:
+- http://webapp.org.ua/dev/make-use-of-google-spreadsheets-in-your-php-scripts/
+
+
+
+UI Angular:
+
+http://angular-ui.github.io/ng-grid/
+http://ui-grid.info/
+http://de.slideshare.net/giorrrgio/pug-roma-datagrids-with-symfony-2-backbone-and-backgrid
+
+https://developers.google.com/gdata/docs/directory
+https://developers.google.com/google-apps/documents-list/#creating_or_uploading_spreadsheets
+
+
+https://docs.google.com/spreadsheets/d/1d2SGaWyN4jiBryYeo7SK99nIPgg8GdTgWJJtcrjbJbM/edit?usp=sharing
+
+//------------------------------------------------------------------------------------------------------
+http://stackoverflow.com/questions/21470405/google-api-how-to-connect-to-receive-values-from-spreadsheet
+
+https://blogs.it.ox.ac.uk/acit-rs-team/2014/10/08/how-to-get-data-out-of-a-google-spreadsheet-using-jsonp/
+
+
+
+#}
